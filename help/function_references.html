@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- * Helpfiles for the Simulink-UHD Project
+ * @copyright:  Communications Engineering Lab (CEL), http://www.cel.kit.edu
+ * @license:  GNU General Public License, Version 3-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Function References :: Simulink-UHD</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+
+  <body><!-- Navigation Bar Top -->
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="nav"
+      summary="Navigation aid">
+      <tbody>
+        <tr>
+          <td> <b>Simulink-UHD</b> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Headline -->
+    <h1>Function References</h1>
+
+    <hr />
+
+    <p>This page provides an overview of the MATLAB functions included in
+      the Simulink-UHD software package.</p>
+
+	<!-- On this Page... -->
+    <table cellspacing="0" cellpadding="4" border="0" class="pagenavtable">
+      <tbody>
+        <tr>
+          <th> Reference for ... </th>
+        </tr>
+        <tr>
+          <td>
+            <p><a href="#uhd_find_devices">uhd_find_devices</a></p>
+			<p><a href="#uhd_set_param">uhd_set_param</a></p>
+			<p><a href="#uhd_get_param">uhd_get_param</a></p>
+			<p><a href="#uhd_usrp_explorer">uhd_usrp_explorer</a></p>
+            <p><a href="#uhd_check_device_exists">uhd_check_device_exists</a></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Functions -->
+	<!-- uhd_find_devices -->
+	<br />
+    <h2><a name="uhd_find_devices">uhd_find_devices</a></h2>
+    USRPs attached to the host can be discovered using this function. The function returns a summary about connected USRPs containing the name, the type and the address/serial for each device.<br />
+    <h3>Usage:</h3>
+    <table cellspacing="0" cellpadding="5" border="1" class="note" style="width: 161px; height: 53px;">
+      <tbody>
+        <tr width="90%">
+          <td>
+          <pre>&gt;&gt; <b>uhd_find_devices</b>
+linux; GNU C++ version 4.6.3; Boost_104400; UHD_003.004.003-177-g584b7ae2
+
+
+Found 1 device(s):
+
+Identifier    Type  Name
+==============================
+
+192.168.10.52 usrp2 <noname></pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+	<!-- uhd_get_param -->
+	<br />
+    <h2><a name="uhd_get_param">uhd_get_param</a></h2>
+    Parameters of a USRP can be queried using this function. The supported parameter list is displayed when executing the <em>uhd_get_param</em> function without arguments. The number of queried parameters at once can be greater than one.<br />
+    <h3>Usage:</h3>
+    <table cellspacing="0" cellpadding="5" border="1" class="note" style="width: 161px; height: 53px;">
+      <tbody>
+        <tr width="90%">
+          <td>
+            <pre>&gt;&gt; [a b c]=<b>uhd_get_param</b>('192.168.55.2','mboard_name','tx_rate(0)','tx_antenna')<br /><br />
+a = 
+
+    mboard: 0
+      name: 'USRP2-REV3'
+
+
+b =
+
+     1000000
+
+
+c = 
+
+    channel: 0
+       name: 'TX/RX'</pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+	<!-- uhd_usrp_explorer -->
+	<br />
+    <h2><a name="uhd_usrp_explorer">uhd_usrp_explorer</a></h2>
+	This function displays an user friendly summary of the parameters of a USRP using an explorer-like GUI.
+    <h3>Usage:</h3>
+    <table cellspacing="0" cellpadding="5" border="1" class="note" style="width: 161px; height: 53px;">
+      <tbody>
+        <tr width="90%">
+          <td>
+            <pre>&gt;&gt; <b>uhd_usrp_explorer</b>('192.168.55.2')<br /></pre>
+		</td>
+        </tr>
+      </tbody>
+	</table><br />
+	<img src="figures/USRP_explorer.png" /><br /><br />
+To filter only device sensors, use:
+    <table cellspacing="0" cellpadding="5" border="1" class="note" style="width: 161px; height: 53px;">
+      <tbody>
+        <tr width="90%">
+          <td>
+            <pre>&gt;&gt; <b>uhd_usrp_explorer</b>('192.168.55.2',1)<br /></pre>
+		</td>
+        </tr>
+      </tbody>
+	</table>
+
+
+<!-- uhd_check_device_exists -->
+	<br />
+    <h2><a name="uhd_check_device_exists">uhd_check_device_exists</a></h2>
+	This function can be used to verify if a USRP is attached to the host or not. The return value is greater zero if the device exists.<br />
+    <h3>Usage:</h3>
+    <table cellspacing="0" cellpadding="5" border="1" class="note" style="width: 161px; height: 53px;">
+      <tbody>
+        <tr width="90%">
+          <td>
+            <pre>&gt;&gt; <b>uhd_check_device_exists</b>('192.168.55.2')<br /><br />
+ans =
+
+     1</pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Navigation Bar Bottom -->
+    <p></p>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" summary="Navigation aid"
+      class="nav">
+      <tbody>
+        <tr>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Copyright --> <br />
+    <p class="copy"> © 2012 <a href="http://www.cel.kit.edu/english/index.php">
+        Communications Engineering Lab</a> <tt class="minicdot">•</tt>
+      <a href="index.html">Homepage</a> </p>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- * Helpfiles for the Simulink-UHD Project
+ * @copyright:  Communications Engineering Lab (CEL), http://www.cel.kit.edu
+ * @license:  GNU General Public License, Version 3-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>uhd_source :: Block Reference :: Simulink-UHD</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+
+    <!-- Navigation Bar Top -->
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" summary="Navigation aid"
+      class="nav">
+      <tbody>
+        <tr>
+          <td> <b>Simulink-UHD</b> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Headline -->
+    <h1>UHD Source block</h1>
+
+    <hr />
+
+    <!-- Description -->
+
+    <h2>Description</h2>
+    The UHD Source block is used to receive data from a USRP. The block acts as a frontend for the <em>uhd_source</em> S-function.<br /><br />
+	<p> <img src="figures/uhd_source_icon.png" /> </p>
+	
+	<!-- On this Page... -->
+    <table cellspacing="0" cellpadding="4" border="0" class="pagenavtable">
+      <tbody>
+        <tr>
+          <th> Select Tab Pane... </th>
+        </tr>
+        <tr>
+          <td>
+            <p><a href="#device">Device</a></p>
+			<p><a href="#mb">Motherboard</a></p>
+			<p><a href="#rx">Rx Channel</a></p>
+			<p><a href="#misc">Miscellaneous (Misc)</a></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+	<br /><br />
+	
+    <!-- Device Tab -->
+    <h2>Dialog Box</h2>
+	The dialog box can be used to set the parameters of the USRP. The default use-case of the UHD Source block
+	will be in connection with one USRP. In this case, all parameters have just one value (e.g. carrier frequency <tt>2.41e9</tt>). 
+	In the MIMO-case or when using USRPs with multiple receive channels, also multiple values
+	for one parameter are possible (e.g. carrier frequency <tt>[2.41e9 2.42e9]</tt>). 
+	For multiple value use the common MATLAB vector notation <tt>[param1 param2 ...]</tt>. If just one value is specified, it will be used for all channels or respectively for all devices.<br /><br />
+    <h3><a name="device">Device Tab Pane</a></h3>
+    <p> <img src="figures/uhd_source_Device.png" /> </p>
+    <dl>
+      <dt> <b>Device Identifier (e.g. IP Address)</b><br />
+      </dt>
+      <dd>
+        <p> Specify the identifier of the attached USRP. Possible identifiers are the IP Address (e.g. <tt>addr=192.168.55.3</tt>), the Serial Number (e.g. <tt>serial=EGR18WFRP</tt>), the Type (e.g. <tt>type=usrp2</tt>), or the Device Name (e.g. <tt>name=myUSRP</tt>). Available devices are displayed in the block description.
+		The identifier should be non-ambiguous. In the case of an IP Address, the hint <tt>addr=</tt> can be omitted.</p>
+      </dd>
+	  <dt> <b>Query Device</b><br />
+      </dt>
+      <dd>
+        <p> The Query Device checkbox acts like a push-button and displays information and parameters about the USRP (according to the <em>identifier</em>) using the USRP explorer. The parameters can be used to complete the whole UHD Sink mask. (Just to make sure, the checkbox can't be selected.)</p>
+      </dd>
+      <dt> <b>Device Identifier (Slave)</b> and <b>MIMO</b> </dt>
+      <dd>
+        <p>Specify the IP address of the USRP slave device. This option becomes available by selecting the <em>MIMO</em> checkbox. To clearly set the master and the
+		slave device, the hints should be numbered, example: Master <tt>addr0=192.168.55.2</tt>, Slave <tt>addr1=192.168.55.3</tt>. </p>
+      </dd>
+    </dl>
+
+    <!-- Baseband Tab -->
+    <h3><a name="mb">Baseband Tab Pane</a></h3>
+    <h3></h3>
+    <p> <img src="figures/uhd_source_Baseband.png" /> </p>
+	<dl>
+      <dt> <b>Sample Rate</b><br />
+      </dt>
+      <dd>
+        <p> Set the rate in Samples per second (Sps) of the received samples from the USRP. The underlying S-function will determine an appropriate decimation factor. The S-function will produce a warning in the MATLAB command window, if the exact decimation factor isn't possible.</p>
+      </dd>
+		<dt> <b>Subdevice Mapping</b> </dt>
+      <dd>
+        <p> Determine the signal path between the antenna and the ADC. In the UHD context, each path is designated as channel. Channels are consecutively numbered starting from 0.  
+			The subdevice mapping is a vector of strings as follows: <tt>[Dboard_1:Subdev_1 Dboard_2:Subdev_2 ...]</tt>. The path <tt>Dboard_1:Subdev_1</tt>
+			is mapped to channel 0 (since it is the first position in the vector), <tt>Dboard_2:Subdev_2</tt> is mapped to channel 1, and so on.</p>
+		<p>	<em>Example:</em> With the output of the USRP explorer (tree), one possible subdevice mapping could be: <tt>[A:0]</tt>.</p>
+			<img src="figures/uhd_source_SubdevMap.png" />
+      </dd>
+	  <dt> <b>Sample per frame</b><br />
+      </dt>
+      <dd>
+        <p> Specify the number of samples per frame of the block output (e.g. <tt>512</tt>).</p>
+      </dd>
+	  <dt> <b>Output Type</b><br />
+      </dt>
+      <dd>
+        <p> Choose between a frame-based or a vector-based output. See the MATLAB documentation for more information.</p>
+      </dd>
+	  <dt> <b>Data Type</b><br />
+      </dt>
+      <dd>
+        <p> Set the output data type.</p>
+      </dd>
+	  <dt> <b>Clock Source</b><br />
+      </dt>
+      <dd>
+        <p>Specify the clock source of the USRP (e.g. <tt>internal</tt>). See the board documentation for more information.</p>
+      </dd>
+	  <dt> <b>Time Source</b><br />
+      </dt>
+      <dd>
+        <p>Specify the time source of the USRP (e.g. <tt>none</tt>). See the board documentation for more information.</p>
+      </dd>
+    </dl>
+	
+	<!-- RF Frontend Tab -->
+    <h3><a name="tx">RF Frontend Tab Pane</a></h3>
+    <h3></h3>
+    <p> <img src="figures/uhd_source_Frontend.png" /> </p>
+    <dl>
+      <dt> <b>Carrier Frequency (Hz)</b> </dt>
+      <dd>
+        <p> Specify the carrier frequency of the received signal (e.g. <tt>2.41e9</tt>). Set the <em>tunable</em> checkbox to tune during runtime using an additional input port</p>
+      <dt> <b>Bandwidth (Hz)</b> </dt>
+      <dd>
+        <p>Set the bandwidth of the daughterboard (e.g. <tt>40e6</tt>). See the daughterboard documentation for more information.<br />
+        </p>
+      </dd>
+      <dt> <b>Gain Value (dB)</b> </dt>
+      <dd>
+        <p> Specify any gain or attenuation within the gain range of the daughterboard (e.g. <tt>[10]</tt>). Set the <em>tunable</em> checkbox to change the gain during runtime using an additional gain input port.</p>
+      </dd>
+      <dt> <b>Antenna</b> </dt>
+      <dd>
+        <p>Specify the antenna of the mounted daughterboard (e.g. <tt>TX/RX</tt>). See the daughterboard documentation for more information.
+        </p>
+      </dd>
+    </dl>
+	
+	<!-- Misc Tab -->
+	<h3><a name="misc">Misc Tab Pane</a></h3>
+    <h3></h3>
+    <p> <img src="figures/uhd_source_Misc.png" /> </p>
+    <dl>
+      <dt> <b>Restore Block Size</b> </dt>
+      <dd>
+        <p> Restore the geometric size of the UHD Source block. The checkbox acts like a push-button and hence can't be set.
+        </p>
+      </dd>
+    </dl>
+
+    <!-- Navigation Bar Bottom -->
+    <p></p>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" summary="Navigation aid"
+      class="nav">
+      <tbody>
+        <tr>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Copyright --> <br />
+    <p class="copy"> © 2012 <a href="http://www.cel.kit.edu/english/index.php">
+        Communications Engineering Lab</a> <tt class="minicdot">•</tt>
+      <a href="index.html">Homepage</a> </p>
+  </body>
+</html>

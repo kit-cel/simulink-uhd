@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- * Helpfiles for the Simulink-UHD Project
+ * @copyright:  Communications Engineering Lab (CEL), http://www.cel.kit.edu
+ * @license:  GNU General Public License, Version 3-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>uhd_source :: Block Reference :: Simulink-UHD</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+
+    <!-- Navigation Bar Top -->
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" summary="Navigation aid"
+      class="nav">
+      <tbody>
+        <tr>
+          <td> <b>Simulink-UHD</b> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Headline -->
+    <h1>UHD Sensor block</h1>
+
+    <hr />
+
+    <!-- Description -->
+
+    <h2>Description</h2>
+  The UHD Sensor block is used to query sensor values from a USRP. The block acts as a frontend for the <em>uhd_sensor</em> S-function.<br /><br />
+	<p> <img src="figures/uhd_sensor_icon.png" /> </p>
+	
+	<!-- On this Page... -->
+    <table cellspacing="0" cellpadding="4" border="0" class="pagenavtable">
+      <tbody>
+        <tr>
+          <th> Select Tab Pane... </th>
+        </tr>
+        <tr>
+          <td>
+            <p><a href="#device">Sensor</a></p>			
+			<p><a href="#misc">Miscellaneous (Misc)</a></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+	<br /><br />
+	
+    <!-- Sensor Tab -->
+    <h2>Dialog Box</h2>
+	The dialog box can be used to set the parameters of a USRP sensor.<br /><br />
+    <h3><a name="device">Device Tab Pane</a></h3>
+    <p> <img src="figures/uhd_sensor_Sensor.png" /> </p>
+    <dl>
+      <dt> <b>Device Identifier (e.g. IP Address)</b><br />
+      </dt>
+      <dd>
+        <p> Specify the identifier of the attached USRP. Possible identifiers are the IP Address (e.g. <tt>addr=192.168.55.3</tt>), the Serial Number (e.g. <tt>serial=EGR18WFRP</tt>), the Type (e.g. <tt>type=usrp2</tt>), or the Device Name (e.g. <tt>name=myUSRP</tt>). Available devices are displayed in the block description.
+		The identifier should be non-ambiguous. In the case of an IP Address, the hint <tt>addr=</tt> can be omitted.</p>
+      </dd>
+	  <dt> <b>Query Sensors</b><br />
+      </dt>
+      <dd>
+        <p> The <em>Query Sensors</em> checkbox acts like a push-button and displays information and parameters about the USRP (according to the <em>identifier</em>) using the USRP explorer and a special sensor filter. The parameters can be used to complete the whole UHD Sensor mask. (Just to make sure, the checkbox can't be selected.) </p>
+      </dd>
+      <dt> <b>Channel, Class, Name</b> and <b> Data Type</b></dt>
+      <dd>
+        <p>These sensor-specific values can be obtained by using the <em>Query Sensors</em> function.</p>
+		<p>	<em>Example:</em> With the output of the USRP explorer (tree), one possible sensor could be: <tt>mimo_locked</tt>.</p>
+		<img src="figures/uhd_sensor_Help.png" />
+      </dd>
+	  <dt> <b>Sample time</b> </dt>
+      <dd>
+        <p>Specify the sample time (update interval) of the UHD Sensor block.</p>
+      </dd>
+    </dl>
+	
+	<!-- Misc Tab -->
+	<h3><a name="misc">Misc Tab Pane</a></h3>
+    <h3></h3>
+    <p> <img src="figures/uhd_sensor_Misc.png" /> </p>
+    <dl>
+      <dt> <b>Restore Block Size</b> </dt>
+      <dd>
+        <p> Restore the geometric size of the UHD Source block. The checkbox acts like a push-button and hence can't be set.<br />
+        </p>
+      </dd>
+    </dl>
+
+    <!-- Navigation Bar Bottom -->
+    <p></p>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" summary="Navigation aid"
+      class="nav">
+      <tbody>
+        <tr>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Copyright --> <br />
+    <p class="copy"> © 2012 <a href="http://www.cel.kit.edu/english/index.php">
+        Communications Engineering Lab</a> <tt class="minicdot">•</tt>
+      <a href="index.html">Homepage</a> </p>
+  </body>
+</html>

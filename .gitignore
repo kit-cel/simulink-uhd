@@ -1,0 +1,13 @@
+/settings.mat
+*.mexw64
+*.asv
+*.autosave
+*.original
+*.pdb
+*.manifest
+*.map
+*.dll
+*.mexw32
+*.mexa64
+*.*~
+bin/

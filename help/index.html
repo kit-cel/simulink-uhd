@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- * Helpfiles for the Simulink-UHD Project
+ * @copyright:  Communications Engineering Lab (CEL), http://www.cel.kit.edu
+ * @license:  GNU General Public License, Version 3-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Simulink-UHD</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+
+    <!-- Navigation Bar Top -->
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="nav"
+      summary="Navigation aid">
+      <tbody>
+        <tr>
+          <td> <b>Simulink-UHD</b> </td>
+        </tr>
+      </tbody>
+    </table>
+
+	<!-- Headline -->
+	<h1>Simulink-UHD: A Simulink Interface for the UHD</h1>
+
+    <hr />
+
+    <!-- Content -->
+    <p>The Simulink-UHD project is an Open Source Software Package that
+      enables owners of a Universal Software Radio Peripheral
+      (hereinafter referred to as USRP) from <a href="http://www.ettus.com/">Ettus
+
+        Research</a> to build models in Simulink that interface with the
+      device in real-time. Simulink-UHD uses the Universal Hardware Driver
+      (UHD) developed by Ettus Research to transfer data between
+      Simulink and the USRP. It is thus possible to
+      build a wide variety of signal processing and
+      wireless communication applications directly in Simulink while being
+      able to test them on real hardware at the same time.</p>
+    <p> This software package was initiated at the <em>Communication
+        Engineering Lab (CEL)</em> at the <em>Karlsruhe Institute of
+        Technology (KIT)</em>, Germany. </p>
+
+     <!-- On this Page... -->
+      <table cellspacing="0" cellpadding="4" border="0" class="pagenavtable">
+        <tbody>
+          <tr>
+            <th> Information about ... </th>
+          </tr>
+          <tr>
+            <td>
+              <p><a href="#requ">Requirements</a></p>
+              <p><a href="#insl">Build/Install instructions for Linux</a></p>
+              <p><a href="#insw">Build/Install instructions for Microsoft Windows</a></p>
+              <p><a href="#bloc">Block References</a></p>
+              <p><a href="#func">Function References</a></p>
+              <p><a href="#link">Weblinks</a></p>
+              <p><a href="#copy">Copyright</a></p>
+              <p><a href="#cont">Contact</a></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <br />
+
+    <!-- Requirements -->
+    <h3><a name="requ">Requirements</a></h3>
+    <ul>
+      <li>MATLAB/Simulink (R2009b or newer) and <em>MEX</em> <a href="http://www.mathworks.de/support/compilers">compatible</a> Compiler</li>
+      <li>UHD library from the <a href="http://code.ettus.com/redmine/ettus/projects/uhd/wiki">Ettus Research</a></li>
+      <li>Boost C++ libraries from <a href="http://http://www.boost.org/">here</a>
+    </ul>
+    The Simulink-UHD software package doesn't come with pre-build binaries due to license issues, but the compilation is quite simple.</br>
+
+    <!-- LINUX -->
+    <h3><a name="insl">Build/Install instructions for Linux</a></h3>
+    The build instructions for Linux-based systems are a little more extensive/complicated than for Windows. The main circumstance is that the used UHD library <em>libuhd</em> has to be compiled with the same Boost version as MATLAB. If you already have an existing UHD installation, check the versions:
+    <ul>
+      <li>
+        Locate one of the MATLAB Boost libraries and check the filename
+        <pre>$ <b>locate</b> libboost_regex
+MATLAB_ROOT/bin/glnx*/libboost_regex.so.1.44.0</pre>
+      </li>
+      <li>
+        Locate the <em>libuhd</em> library (usually <tt>/usr/lib</tt>) and check its dependencies
+        <pre>$ <b>ldd</b> /usr/lib/libuhd.so.003.004 | <b>grep</b> boost
+      libboost_date_time.so.1.46.1 => /usr/lib/libboost_date_time.so.1.46.1 (0x00007f6520b16000)
+      libboost_filesystem.so.1.46.1 => /usr/lib/libboost_filesystem.so.1.46.1 (0x00007f65208f8000)
+      libboost_regex.so.1.46.1 => /usr/lib/libboost_regex.so.1.46.1 (0x00007f65205f5000)
+      libboost_system.so.1.46.1 => /usr/lib/libboost_system.so.1.46.1 (0x00007f65203f1000)
+      libboost_thread.so.1.46.1 => /usr/lib/libboost_thread.so.1.46.1 (0x00007f65201d8000)</pre>
+      </li>      
+    </ul>
+    If the versions of the Boost libraries differ as in the example above or you haven't an UHD installation yet, follow the steps 1-7. If the versions are the same, continue with step 8.
+    <br><br>The following steps are exemplary for Ubuntu 12.04 Precise Pangolin, MATLAB R2012a and UHD 003.004.003:
+    <ol>
+      <li>
+        Download the Boost libraries from <a href="http://sourceforge.net/projects/boost/files/boost/">Sourceforge</a>. It has to be the same version as MATLAB uses, here 1.44. 
+      </li>
+      <li>
+        Extract the archive, enter the Boost folder and start the configuration
+        <pre>$ <b>./bootstrap</b></pre>
+        The Boost folder will be called <tt>BOOST_ROOT</tt> below.
+      </li>
+      <li>
+        If no errors or missing dependencies occurred, start the Boost build process for the needed libraries
+        <pre>$ <b>./bjam</b> --layout=tagged --with-date_time --with-filesystem --with-program_options --with-regex --with-system --with-thread --with-test threading=multi</pre>
+        Since the Boost libraries are only needed for the Simulink-UHD software package, you <b>shouldn't</b> install them system-wide (No <em>sudo ./bjam install</em>).
+      </li>
+      <li>
+        Get the source code of the UHD from Ettus Research and provide the prerequisites as explained <a href="http://ettus-apps.sourcerepo.com/redmine/ettus/projects/uhd/wiki/UHD_Build">here</a>. The UHD folder will be called <tt>UHD_ROOT</tt> below.
+      </li>
+      <li>
+        Follow the <a href="http://files.ettus.com/uhd_docs/manual/html/build.html">Build Guide</a> until the point of generating the Makefiles with CMake. It is important to tell the UHD build system to use the self-build Boost libraries. For example, change the <em>Boost_DATE_TIME_LIBRARY</em> path to <tt>BOOST_ROOT/stage/lib/libboost_date_time-mt.so</tt>. We recommend to use the graphical CMake tools <em>ccmake</em> or <em>cmake-gui</em> for doing so. Both are available in the Ubuntu package manager.
+      </li>
+      <li>
+        Generate the Makefiles and start the UHD build process
+        <pre>$ <b>make</b></pre>
+        Since the UHD library is only needed for the Simulink-UHD software package, you <b>shouldn't</b> install it system-wide (No <em>sudo make install</em>).
+      </li>
+      <li>
+        After a successful build, check the dependencies of the self-build UHD library
+        <pre>$ <b>ldd</b> UHD_ROOT/host/build/lib/libuhd.so.003.004 | <b>grep</b> boost
+      libboost_date_time-mt.so.1.44.0 => BOOST_ROOT/stage/lib/libboost_date_time-mt.so.1.44.0 (0x00007fca6bfc6000)
+      libboost_filesystem-mt.so.1.44.0 => BOOST_ROOT/stage/lib/libboost_filesystem-mt.so.1.44.0 (0x00007fca6bda2000)
+      libboost_regex-mt.so.1.44.0 => BOOST_ROOT/stage/lib/libboost_regex-mt.so.1.44.0 (0x00007fca6ba9c000)
+      libboost_system-mt.so.1.44.0 => BOOST_ROOT/stage/lib/libboost_system-mt.so.1.44.0 (0x00007fca6b898000)
+      libboost_thread-mt.so.1.44.0 => BOOST_ROOT/stage/lib/libboost_thread-mt.so.1.44.0 (0x00007fca6b67e000)</pre>
+        If the Boost version match the MATLAB Boost version, continue.
+      </li>
+      <li>
+          Get the Simulink-UHD source from <a href="https://github.com/kit-cel/simulink-uhd">GitHub</a>
+          <pre>$ <b>git clone</b> git://github.com/kit-cel/simulink-uhd.git</pre>
+          If you aren't using <em>git</em>, you can download a <a href="https://github.com/kit-cel/simulink-uhd/zipball/master"> compressed file</a> from the project page directly. Extract the archive to any folder you want.
+      </li>
+      <li>
+          Run MATLAB and setup the <em>MEX</em> compiler
+          <pre>&gt;&gt; <b>mex</b> -setup</pre>
+          (Successfully tested with gcc 4.6.3)
+      </li>
+      <li>
+          Switch to your Simulink-UHD directory.
+      </li>
+      <li>
+          Open and modify <tt>config.m</tt> to point to your <em>Boost</em> and <em>UHD</em> directory. 
+          <pre>% UHD install directory
+UHD_DIRECTORY = '';
+% Boost include directory
+BOOST_DIRECTORY = '';</pre>
+          Afterwards run <em>config.m</em> to generate the settings.mat file required for <em>make.m</em>.
+      </li>
+      <li>
+          Start the build process
+          <pre>&gt;&gt; <b>make</b></pre>
+          For additional options run <em>help make</em>.
+      </li>
+      <li>
+          Add the directories <em>bin</em>, <em>blockset</em>, <em>help</em> and <em>utils</em> to your MATLAB path environment.
+      </li>
+      <li>
+          You will now find a new Toolbox named <em>Simulink-UHD</em> in the <tt>Simulink Library Browser</tt>. Additionally, a simple spectrum scope model is located in the directory <em>demo</em>.
+      </li>
+      <li>
+          <b>Important:</b> Since MATLAB uses the standard search-paths for external libraries, add the path of the self-build UHD library to the search-path
+          <pre>$ <b>export</b> LD_LIBRARY_PATH=UHD_ROOT/host/build/lib
+$ <b>matlab</b></pre>
+          Alternatively, you can copy the <em>libuhd</em> to the MATLAB library folder <tt>MATLAB_ROOT/bin/glnx*</tt>.
+      </li>
+      <li>
+          Check if the Simulink-UHD software package is working properly
+          <pre>&gt;&gt; <b>uhd_find_devices</b>
+linux; GNU C++ version 4.6.3; Boost_104400; UHD_003.004.003-177-g584b7ae2
+
+
+Found 1 device(s):
+
+Identifier    Type  Name
+==============================
+
+192.168.10.52 usrp2 <noname></pre>
+      </li>
+    </ol>
+
+    <!-- WINDOWS -->
+    <h3><a name="insw">Build/Install instructions for Microsoft Windows</a></h3>
+    <ol>
+      <li>
+          Get and build UHD or download the <a href="http://code.ettus.com/redmine/ettus/projects/uhd/wiki/UHD_Windows">pre-build binaries</a>. The latest successfully tested version is 003.004.003. If you are using a 64-bit MATLAB, make sure to get a 64-bit build of UHD.  
+      </li>
+      <li>
+          After installing UHD, please make sure it is working. Plug-in and connect your USRP device and run one the tools that came with UHD, e.g.
+          <pre>&gt; <b>uhd_find_devices.exe</b>
+Win32; Microsoft Visual C++ version 10.0; Boost_104700; UHD_003.004.003-26-stable
+
+--------------------------------------------------
+-- UHD Device 0
+--------------------------------------------------
+Device Address:
+  type: usrp2
+  addr: 192.168.10.52
+  name:
+  serial:</pre>
+
+      If you have not added UHD to your PATH, these tools are found the bin folder of your UHD installation (usually <tt>C:\Program Files\UHD\bin</tt>).
+      </li>
+      <li>
+          Download the Boost libraries from <a href="http://sourceforge.net/projects/boost/files/boost/">Sourceforge</a> and extract them to e.g. <tt>C:\boost</tt>.
+      </li>      
+      <li>
+          Get the Simulink-UHD source from <a href="https://github.com/kit-cel/simulink-uhd">GitHub</a>
+          <pre>$ <b>git clone</b> git://github.com/kit-cel/simulink-uhd.git</pre>
+          If you aren't using <em>git</em>, you can download a <a href="https://github.com/kit-cel/simulink-uhd/zipball/master"> compressed file</a> from the project page directly. Extract the archive to any folder you want.
+      </li>
+      <li>
+          Run MATLAB and setup the <em>MEX</em> compiler
+          <pre>&gt;&gt; <b>mex</b> -setup</pre>
+          (Successfully tested with Microsoft Visual Studio 10)
+      </li>
+      <li>
+          Switch to your Simulink-UHD directory.
+      </li>
+      <li>
+          Open and modify <tt>config.m</tt> to point to your <em>Boost</em> and <em>UHD</em> directory. 
+          <pre>% UHD install directory
+UHD_DIRECTORY = '';
+% Boost include directory
+BOOST_DIRECTORY = '';</pre>
+          Afterwards run <em>config.m</em> to generate the settings.mat file required for <em>make.m</em>.
+      </li>
+      <li>
+          Start the build process
+          <pre>&gt;&gt; <b>make</b></pre>
+          For additional options run <em>help make</em>.
+      </li>
+      <li>
+          Add the directories <em>bin</em>, <em>blockset</em>, <em>help</em> and <em>utils</em> to your MATLAB path environment.
+      </li>
+      <li>
+        You will now find a new Toolbox named <em>Simulink-UHD</em> in the <tt>Simulink Library Browser</tt>. Additionally, a simple spectrum scope model is located in the directory <em>demo</em>.
+      </li>
+    </ol>
+
+    <!-- Block References -->
+    <h3><a name="bloc">Block References</a></h3>
+    The Simulink-UHD software package comes with three Simulink blocks that can be found in the Simulink Block Library: <em>uhd_sink</em>, <em>uhd_source</em> and <em>uhd_sensor</em>. For more details refer to the following sites:
+    <ul>
+      <li><a href="uhd_sink.html">uhd_sink</a>: Transfer data from Simulink to the USRP.</li>
+      <li><a href="uhd_source.html">uhd_source</a>: Receive data from the USRP.</li>
+      <li><a href="uhd_sensor.html">uhd_sensor</a>: Query sensor values from a USRP.</li>
+    </ul>
+
+    <!-- Function References -->
+    <h3><a name="bloc">Function References</a></h3>
+    In order to find attached USRPs or to query device parameters, the Simulink-UHD offers some functions like <em>uhd_find_devices</em> or <em>uhd_get_param</em> that can be invoked from the MATLAB console. For a list of functions refer to the <a href="function_references.html">references site</a>.
+
+    <!-- Copyright -->
+    <h3><a name="copy">Copyright</a></h3>
+    <p> The software-package <em>Simulink-UHD</em> consists of software
+    from several authors under different licenses. The following table
+    lists all included software packages: </p>
+    <table cellpadding="5" border="1" width="100%">
+      <thead valign="top">
+        <tr>
+          <th> Software Package </th>
+          <th> Copyright holder / Author </th>
+          <th> License </th>
+          <th> Sourcecode Folders </th>
+        </tr>
+        <tr valign="top">
+          <td> <a target="_blank" href="http://www.cel.kit.edu/english/usrp.php">Simulink-UHD</a>
+          </td>
+          <td> Communication Engineering Lab (CEL), Karlsruhe Institute
+            of Technology (KIT) / Sebastian Koslowski, Michael Schwall<br />
+          </td>
+          <td> <a href="gpl-3.0.txt"> GNU General Public License </a>
+          </td>
+          <td> src/<br />
+            include/<br />
+          </td>
+        </tr>
+        <tr valign="top">
+          <td> <a target="_blank" href="http://ettus-apps.sourcerepo.com/redmine/ettus/projects/uhd/wiki">libuhd</a>
+          </td>
+          <td> Free Software Foundation, Inc. / Ettus Research LLC<br />
+          </td>
+          <td> <a href="gpl-3.0.txt"> GNU General Public License </a>
+          </td>
+          <td> wherever you saved it </td>
+        </tr>
+      </thead>
+    </table>
+
+    <!-- Weblinks -->
+    <h3><a name="link">Weblinks</a></h3>
+    <p> The following table lists various weblinks which might be useful
+      to you: </p>
+      <table cellpadding="5" border="0" width="100%">
+      <tbody>
+        <tr valign="top">
+          <td width="300"> <a href="http://www.cel.kit.edu/english/usrp.php">
+              Simulink-UHD</a> </td>
+          <td width="600"> Homepage of this project. </td>
+        </tr>
+        <tr valign="top">
+          <td width="300"> <a href="http://ettus-apps.sourcerepo.com/redmine/ettus/projects/uhd/wiki">
+              UHD</a> </td>
+          <td width="600"> The software that provides an API to the
+            USRP.</td>
+        </tr>
+        <tr valign="top">
+          <td width="300"><a href="http://www.ettus.com/">Ettus
+              Research, Inc. </a> </td>
+          <td width="600"> The company that produces the USRP. </td>
+        </tr>
+        <tr valign="top">
+          <td width="300"><a href="http://files.ettus.com/uhd_docs/manual/html/index.html">UHD USRP Application Notes</a> </td>
+          <td width="600"> Build guide, application notes and API documentation of the UHD </td>
+        </tr>
+        <tr valign="top">
+          <td width="300"><a href="http://files.ettus.com/uhd_docs/manual/html/dboards.html">Daughterboard Application Notes </a> </td>
+          <td width="600"> Some useful information about daughterboards </td>
+        </tr>
+        <tr valign="top">
+          <td width="300"> <a href="http://www.cel.kit.edu/english/index.php">
+              Communication Engineering Lab (CEL) </a> </td>
+          <td width="600"> The institute at the Karlsruhe Institute of
+            Technology, Germany, that initated the Simulink-UHD project. </td>
+        </tr>
+        <tr valign="top">
+          <td width="300"> <a href="http://www.kit.edu/english/index.php">
+              Karlsruhe Institute of Technology </a> </td>
+          <td width="600"> Karlsruhe Institute of Technology (KIT),
+            University of the State Baden-Württemberg and National
+            Large-scale Research Center of the Helmholtz-Association. </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Contact -->  
+    <h3><a name="cont">Contact</a></h3>
+    <p> If you have further questions concerning the Simulink-UHD software package (e.g. the build-process) or you've found a bug, please feel free to contact us:</p>
+
+    <table cellpadding="5" border="0" width="100%">
+      <tbody>
+        <tr valign="top">
+          <td width="150"> Sebastian Koslowski </td>
+          <td width="800"> <a href="mailto:sebastian.koslowski@kit.edu">sebastian.koslowski@kit.edu</a>    </td>
+        </tr>
+        <tr valign="top">
+          <td width="150"> Michael Schwall </td>
+          <td width="800"> <a href="mailto:michael.schwall@kit.edu">michael.schwall@kit.edu</a> </td>
+        </tr>
+        </tbody>
+    </table> 
+
+    <!-- Navigation Bar Bottom -->
+    <p></p>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="nav"
+      summary="Navigation aid">
+      <tbody>
+        <tr>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Copyright --> <br />
+    <p class="copy"> © 2012 <a href="http://www.cel.kit.edu/english/index.php">
+        Communications Engineering Lab</a> <tt class="minicdot">•</tt>
+      <a href="index.html">Homepage</a> </p>
+  </body>
+</html>
