@@ -165,13 +165,19 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
             
             /* firmware version */
             cur_path = root_path + "/fw_version";
-            key.push_back(cur_path);
-            val.push_back(tree->access<string>(fs_path(cur_path)).get());
+            if (tree->exists(cur_path)) {
+
+                key.push_back(cur_path);
+                val.push_back(tree->access<string>(fs_path(cur_path)).get());
+            }
             
             /* fpga version */
             cur_path = root_path + "/fpga_version";
-            key.push_back(cur_path);
-            val.push_back(tree->access<string>(fs_path(cur_path)).get());
+            if (tree->exists(cur_path)) {
+                
+                key.push_back(cur_path);
+                val.push_back(tree->access<string>(fs_path(cur_path)).get());
+            }
             
             /* query eeprom on mboard */
             cur_path = root_path + "/eeprom";
@@ -247,36 +253,42 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
                 cur_path = root_path + "/" + dboard;            
                     
                 /* query rx eeprom */
-                usrp::dboard_eeprom_t db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/rx_eeprom")).get();
-                if (db_eeprom.id != usrp::dboard_id_t::none())  {
-                    key.push_back(cur_path + "/rx_eeprom/id");
-                    val.push_back(db_eeprom.id.to_pp_string());
-                }
-                if (not db_eeprom.serial.empty()) {
-                    key.push_back(cur_path + "/rx_eeprom/serial");
-                    val.push_back(db_eeprom.serial);
+                if (tree->exists(cur_path + "/rx_eeprom")) {
+                    usrp::dboard_eeprom_t db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/rx_eeprom")).get();
+                    if (db_eeprom.id != usrp::dboard_id_t::none())  {
+                        key.push_back(cur_path + "/rx_eeprom/id");
+                        val.push_back(db_eeprom.id.to_pp_string());
+                    }
+                    if (not db_eeprom.serial.empty()) {
+                        key.push_back(cur_path + "/rx_eeprom/serial");
+                        val.push_back(db_eeprom.serial);
+                    }
                 }
                 
                 /* query tx eeprom */
-                db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/tx_eeprom")).get();
-                if (db_eeprom.id != usrp::dboard_id_t::none())  {
-                    key.push_back(cur_path + "/tx_eeprom/id");
-                    val.push_back(db_eeprom.id.to_pp_string());
-                }
-                if (not db_eeprom.serial.empty()) {
-                    key.push_back(cur_path + "/tx_eeprom/serial");
-                    val.push_back(db_eeprom.serial);
+                if (tree->exists(cur_path + "/tx_eeprom")) {
+                    usrp::dboard_eeprom_t db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/tx_eeprom")).get();
+                    if (db_eeprom.id != usrp::dboard_id_t::none())  {
+                        key.push_back(cur_path + "/tx_eeprom/id");
+                        val.push_back(db_eeprom.id.to_pp_string());
+                    }
+                    if (not db_eeprom.serial.empty()) {
+                        key.push_back(cur_path + "/tx_eeprom/serial");
+                        val.push_back(db_eeprom.serial);
+                    }
                 }
                 
                 /* query gdb eeprom on dboard */
-                db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/gdb_eeprom")).get();
-                if (db_eeprom.id != usrp::dboard_id_t::none())  {
-                    key.push_back(cur_path + "/gdb_eeprom/id");
-                    val.push_back(db_eeprom.id.to_pp_string());
-                }
-                if (not db_eeprom.serial.empty()) {
-                    key.push_back(cur_path + "/gdb_eeprom/serial");
-                    val.push_back(db_eeprom.serial);
+                if (tree->exists(cur_path + "/gdb_eeprom")) {
+                    usrp::dboard_eeprom_t db_eeprom = tree->access<usrp::dboard_eeprom_t>(fs_path(cur_path + "/gdb_eeprom")).get();
+                    if (db_eeprom.id != usrp::dboard_id_t::none())  {
+                        key.push_back(cur_path + "/gdb_eeprom/id");
+                        val.push_back(db_eeprom.id.to_pp_string());
+                    }
+                    if (not db_eeprom.serial.empty()) {
+                        key.push_back(cur_path + "/gdb_eeprom/serial");
+                        val.push_back(db_eeprom.serial);
+                    }
                 }
                                 
                 /* query frontends (subdev) on dboard */
