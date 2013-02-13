@@ -104,7 +104,7 @@ The following steps are exemplary for Ubuntu 12.04 Precise Pangolin, MATLAB R201
 
 1. Download the Boost libraries from [Sourceforge](http://sourceforge.net/projects/boost/files/boost/ "Boost download page"). It has to be the same version as MATLAB uses, here 1.44. Extract the archive, enter the Boost folder and start the configuration
 
-		$ ./bootstrap
+		$ ./bootstrap.sh
 
 	The Boost folder will be called `BOOST_ROOT` below.
 
